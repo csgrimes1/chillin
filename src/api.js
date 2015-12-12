@@ -21,7 +21,7 @@ function timeout(ms, promise) {
 }
 
 function start(options){
-    const promise = this.waiter(options)
+    const promise = this.waiter(_.assign({}, {timeout: this.timeout}, options))
     return timeout(this.timeout, promise)
 }
 
