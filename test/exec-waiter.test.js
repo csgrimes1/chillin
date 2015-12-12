@@ -7,7 +7,7 @@ const api = require('../src/api')
         proxyquire('child_process', {})
         return api.configure({
                 timeout: config.timeout || 5000,
-                waiter: execWaiter
+                wait: execWaiter.wait
             })
             .start(config)
     }

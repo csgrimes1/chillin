@@ -1,10 +1,11 @@
-const test = require('./support/semantic-tape')(module, {}),
-    api = require('../src/api'),
-    mockWaiter = require('../src/mock-waiter')
+const test = require('./support/semantic-tape')(module, {})
+    , api = require('../src/api')
+    , mockWaiterModule = require('../src/mock-waiter')
+    , mockWaiter = mockWaiterModule.wait
 
 test({}, 'basic semantics should lead to resolving promise', function(t){
     api.configure("timeout", 5000)
-        .configure("waiter", mockWaiter)
+        .configure("wait", mockWaiter)
         .start()
         .then(function(){
             t.assert(true, 'Basic test had resolved promise')
@@ -15,9 +16,9 @@ test({}, 'basic semantics should lead to resolving promise', function(t){
 test({}, 'object semantics should lead to resolving promise', function(t){
     api.configure({
             timeout: 5000,
-            waiter: mockWaiter
+            wait: mockWaiter
         })
-        .configure("waiter", mockWaiter)
+        .configure("wait", mockWaiter)
         .start()
         .then(function(){
             t.assert(true, 'Basic test had resolved promise')
@@ -27,7 +28,7 @@ test({}, 'object semantics should lead to resolving promise', function(t){
 
 test({}, 'should time out on long wait', function(t){
     api.configure("timeout", 1)
-        .configure("waiter", () => mockWaiter(2000))
+        .configure("wait", () => mockWaiter(2000))
         .start()
         .catch(function(x){
             t.assert(x.toString().match(/timeout/i), 'Timeout message received')

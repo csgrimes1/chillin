@@ -34,7 +34,7 @@ const test = require('./support/semantic-tape')(module, {
 
         return api.configure({
                 timeout: config.timeout || 5000,
-                waiter: portWaiter
+                wait: portWaiter.wait
             })
             .start({host: "", port: 0})
     },

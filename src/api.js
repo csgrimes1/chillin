@@ -2,7 +2,7 @@
 const _ = require('lodash'),
     _options = {
         timeout: 10000,
-        waiter: null
+        wait: null
     }
 
 function timeout(ms, promise) {
@@ -21,7 +21,7 @@ function timeout(ms, promise) {
 }
 
 function start(options){
-    const promise = this.waiter(_.assign({}, {timeout: this.timeout}, options))
+    const promise = this.wait(_.assign({}, {timeout: this.timeout}, options))
     return timeout(this.timeout, promise)
 }
 
@@ -36,7 +36,7 @@ function merge(newSettings){
         .value()
         .map( setting => {
             if (!_options.hasOwnProperty(setting)  &&  !this.hasOwnProperty(setting)) {
-                throw Error(`Invalid option $setting.`)
+                throw Error(`Invalid option ${setting}.`)
             }
         } )
     return _.assign({start: start}, _options, asObject(this), newSettings)
