@@ -4,45 +4,51 @@ const api = require('../src/api')
     , BAD = "FAKE ERROR"
     , parser = require('../src/commandline-parser')
     , _ = require('lodash')
+    , sinon = require('sinon')
 
 const test = require('./support/semantic-tape')(module, {
     beforeEach(config, t){
-        const portWaiter = proxyquire('../src/port-waiter', {
-            net: {
-                connect(options, onConnect){
-                    var sink = new EventEmitter()
-                    if( config.doesError ){
-                    }
-                    else if( config.doesConnect ){
-                        setTimeout(() => onConnect(), 5)
-                    }
-                    else {
-                        //Cause a delay
-                    }
-                    return {
-                        end(){},
-                        on(evt, arg1, arg2){
-                            sink.on(evt, arg1, arg2)
-                            if( config.doesError ) {
-                                setTimeout(() => {
-                                    sink.emit('error', new Error(BAD))
-                                }, 25)
-                            }
+        const netMock = {
+            connect: sinon.spy((options, onConnect)=> {
+                var sink = new EventEmitter()
+                if (config.doesError) {
+                }
+                else if (config.doesConnect) {
+                    setTimeout(() => onConnect(), 5)
+                }
+                else {
+                    //Cause a delay
+                }
+                return {
+                    end(){
+                    },
+                    setTimeout(){
+                    },
+                    on(evt, arg1, arg2){
+                        sink.on(evt, arg1, arg2)
+                        if (config.doesError) {
+                            setTimeout(() => {
+                                sink.emit('error', new Error(BAD))
+                            }, 25)
                         }
                     }
                 }
-            }
+            })
+        },
+        portWaiter = proxyquire('../src/port-waiter', {
+            net: netMock
         })
 
         const ripOptions = config.ripOptions
             ? config.ripOptions
             : () => {return {host: "", port: 0}}
 
-        return api.configure({
+            , p = api.configure({
                 timeout: config.timeout || 5000,
                 wait: portWaiter.wait
             })
             .start( ripOptions(portWaiter) )
+        return _.assign(p, {netMock: netMock})
     }
 })
 
@@ -77,7 +83,6 @@ const COMMANDLINE = ['node', 'thisScript', '--', 'port', 'www.google.com', '80',
                     doesConnect: true,
                     ripOptions(portWaiterModule){
                         const opts = portWaiterModule.adaptCommandLine(rawCommandLine)
-                            console.log(opts)
                         return opts
                     }
                 })

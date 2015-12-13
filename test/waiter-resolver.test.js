@@ -23,7 +23,6 @@ test({shortName: FULLPATH, expected: FULLPATH}, 'should resolve absolute pathed 
 //Make a relative path based on the process cwd
 const RELATIVEPATH = path.relative(process.cwd(), module.filename)
 test({shortName: RELATIVEPATH, expected: module.filename}, 'should resolve relative pathed waiter', function(t, context){
-        console.log(RELATIVEPATH)
     t.equals(context.result, context.expected)
     t.end()
 })
