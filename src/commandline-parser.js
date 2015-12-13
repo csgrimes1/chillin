@@ -23,13 +23,32 @@ function splitArray(args) {
     return result
 }
 
+function capitalize(s){
+    return s.substr(0, 1).toUpperCase() + s.substr(1)
+}
+
+function formatPropKey(k){
+    const tokens = k.split('-'),
+        xformed = tokens.map( (token, n)=>{
+            return n > 0 ? capitalize(token) : token
+        })
+    return xformed.join("")
+}
+
 module.exports = {
     parse(commandLine){
         const args = parse(sliceArgs(commandLine)),
-            moduleArgs = {_: splitArray(args._)}
+            moduleArgs = {_: splitArray(args._)},
+            pairs = _.pairs( _.assign({}, args, moduleArgs) )
 
-        return _.assign({}, args, moduleArgs)
+        return _.zipObject( pairs.map((pair)=>{
+            return [formatPropKey(pair[0]), pair[1]]
+        }))
     },
+
+    //Scoops the arguments past the last - or -- argument. This
+    //makes it simple to filter out the node and script path arguments.
+    sliceRelevantArguments: sliceArgs,
 
     REQUIREDARG: {required: true},
 

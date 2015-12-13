@@ -27,6 +27,18 @@ test({}, 'should parse command line into positional args and options with undefi
     t.end()
 })
 
+test({}, 'should camel-case multiple token options', function(t, context){
+    const result = cp.parse(COMMANDLINE.slice(0, 8).map( (v, n) => {
+            return 5===n ? '--camel-case' : v
+        })),
+        expect = {
+            _: {module: COMMANDLINE[7]},
+            camelCase: Number(COMMANDLINE[6])
+        }
+    t.deepEqual(result, expect)
+    t.end()
+})
+
 
 const POSITIONALARGS = ['a', 'b', 'c']
 test({}, 'should interpret positional args into named options', function(t, context){
@@ -39,13 +51,12 @@ test({}, 'should interpret positional args into named options', function(t, cont
 test({}, 'should throw upon missing required positional arguments', function(t, context){
     t.plan(1)
     try {
-        const result = cp.readPositionalArgs(POSITIONALARGS, {
+        cp.readPositionalArgs(POSITIONALARGS, {
             first: null,
             second: null,
             third: null,
             fourth: cp.REQUIREDARG
         })
-        console.log(result)
         t.fail('Should have thrown exception')
     }
     catch(x){

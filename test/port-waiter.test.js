@@ -2,6 +2,8 @@ const api = require('../src/api')
     , proxyquire =  require('proxyquire').noPreserveCache().noCallThru()
     , EventEmitter = require('events')
     , BAD = "FAKE ERROR"
+    , parser = require('../src/commandline-parser')
+    , _ = require('lodash')
 
 const test = require('./support/semantic-tape')(module, {
     beforeEach(config, t){
@@ -32,17 +34,16 @@ const test = require('./support/semantic-tape')(module, {
             }
         })
 
+        const ripOptions = config.ripOptions
+            ? config.ripOptions
+            : () => {return {host: "", port: 0}}
+
         return api.configure({
                 timeout: config.timeout || 5000,
                 wait: portWaiter.wait
             })
-            .start({host: "", port: 0})
-    },
-
-    afterEach(t, context){
-
+            .start( ripOptions(portWaiter) )
     }
-
 })
 
 test({doesConnect: true}, 'should resolve promise upon reaching address:port endpoint', function(t, promise){
@@ -68,4 +69,24 @@ test({doesError: true, timeout: 100000}, 'should error out on socket error', fun
         {
             t.pass()
         })
+})
+
+const COMMANDLINE = ['node', 'thisScript', '--', 'port', 'www.google.com', '80', '--timeout', '100000']
+    , rawCommandLine = parser.parse(COMMANDLINE)
+    , config = _.assign({}, {
+                    doesConnect: true,
+                    ripOptions(portWaiterModule){
+                        const opts = portWaiterModule.adaptCommandLine(rawCommandLine)
+                            console.log(opts)
+                        return opts
+                    }
+                })
+test(config, 'should adapt command line arguments to runnable options', function(t, promise){
+    t.plan(1)
+    promise.then(function(){
+        t.pass()
+    })
+    .catch(function(x){
+        t.fail(x)
+    })
 })
