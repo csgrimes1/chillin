@@ -11,7 +11,7 @@ _S_ depends on _D_, but _D_ can be slow to start up. _S_ can use _when-warm_ in 
 ###NodeJS Example
 
 ```javascript
-#include src/cli.js
+#include examples/example-port.js
 ```
 
 ###CLI Example
