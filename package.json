@@ -29,12 +29,13 @@
   },
   "homepage": "https://github.com/csgrimes1/when-warm#readme",
   "devDependencies": {
-    "proxyquire": "^1.7.3",
-    "sinon": "^1.17.2",
-    "tape": "^4.2.2"
+    "proxyquire": "1.7.3",
+    "sinon": "1.17.2",
+    "tap": "2.3.2"
   },
   "dependencies": {
     "lodash": "^3.10.1",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "mockery": "^1.4.0"
   }
 }

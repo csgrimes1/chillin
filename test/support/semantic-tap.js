@@ -1,5 +1,5 @@
 //Makes tape use before/after semantics
-const tape = require('tape')
+const tap = require('tap')
     , proxyquire =  require('proxyquire').noPreserveCache().noCallThru()
     , sinon = require('sinon')
     , path = require('path')
@@ -26,6 +26,6 @@ module.exports = function(testModule, options){
             callback(t, context)
         }
 
-        tape(`MODULE ${moduleName}: ${message}`, tapeCallback)
+        tap.test(`MODULE ${moduleName}: ${message}`, tapeCallback)
     }
 }

@@ -1,11 +1,12 @@
-const test = require('./support/semantic-tape')(module, {})
+const test = require('./support/semantic-tap')(module, {})
     , api = require('../src/api')
     , mockWaiterModule = require('../src/mock-waiter')
     , mockWaiter = mockWaiterModule.wait
 
 test({}, 'basic semantics should lead to resolving promise', function(t){
-    api.configure("timeout", 5000)
-        .configure("wait", mockWaiter)
+    api.loadWaiterModule('mock')
+        .configure('timeout', 5000)
+        .configure('wait', mockWaiter)
         .start()
         .then(function(){
             t.assert(true, 'Basic test had resolved promise')
@@ -14,9 +15,10 @@ test({}, 'basic semantics should lead to resolving promise', function(t){
 })
 
 test({}, 'object semantics should lead to resolving promise', function(t){
-    api.configure({
+    api.loadWaiterModule('mock')
+        .configure({
             timeout: 5000,
-            wait: mockWaiter
+            mockSetting: 2
         })
         .configure("wait", mockWaiter)
         .start()
@@ -27,7 +29,8 @@ test({}, 'object semantics should lead to resolving promise', function(t){
 })
 
 test({}, 'should time out on long wait', function(t){
-    api.configure("timeout", 1)
+    api .loadWaiterModule('mock')
+        .configure("timeout", 1)
         .configure("wait", () => mockWaiter(2000))
         .start()
         .catch(function(x){

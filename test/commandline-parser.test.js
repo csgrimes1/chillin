@@ -1,4 +1,4 @@
-const test = require('./support/semantic-tape')(module, {
+const test = require('./support/semantic-tap')(module, {
         beforeEach(config, t){
             return config
         }

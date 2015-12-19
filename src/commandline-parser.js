@@ -37,7 +37,8 @@ function formatPropKey(k){
 
 module.exports = {
     parse(commandLine){
-        const args = parse(sliceArgs(commandLine)),
+        const args = parse(sliceArgs(commandLine));
+        const
             moduleArgs = {_: splitArray(args._)},
             pairs = _.pairs( _.assign({}, args, moduleArgs) )
 

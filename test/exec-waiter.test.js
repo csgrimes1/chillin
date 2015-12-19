@@ -3,14 +3,14 @@ const api = require('../src/api')
     , execWaiter = require('../src/exec-waiter')
     , _ = require('lodash')
     , cp = require('../src/commandline-parser')
-    , test = require('./support/semantic-tape')(module, {
+    , test = require('./support/semantic-tap')(module, {
     beforeEach(config, t){
         proxyquire('child_process', {})
-        return api.configure({
-                timeout: config.timeout || 5000,
-                wait: execWaiter.wait
-            })
-            .start(config)
+        return api.loadWaiterModule('exec')
+            .configure(_.assign({}, config, {
+                timeout: config.timeout || 5000
+            }))
+            .start()
     }
 })
 

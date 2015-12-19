@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+MYDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SEARCHDIR="$( cd "$MYDIR/../.." && pwd )"
+
+$MYDIR/../shell/bin/build.sh
+
+export NODE_PATH=$SEARCHDIR:$NODE_PATH
+echo $NODE_PATH
+
+ls -1 $MYDIR/*.js | xargs node

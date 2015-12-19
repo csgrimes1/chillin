@@ -24,5 +24,7 @@ module.exports = {
         return _.assign({}, prefixArgs, {
             commandLine: afterName.join(' ')
         })
-    }
+    },
+
+    defaultOptions(){ return {commandLine: null} }
 }

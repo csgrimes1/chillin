@@ -1,6 +1,6 @@
 const resolver = require('../src/waiter-resolver')
     , path = require('path')
-    , test = require('./support/semantic-tape')(module, {
+    , test = require('./support/semantic-tap')(module, {
     beforeEach(config, t){
         return {
             expected: config.expected || config.shortName,

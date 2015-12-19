@@ -4,6 +4,7 @@ const _ = require('lodash'),
         timeout: 10000,
         wait: null
     }
+    , resolver = require('./waiter-resolver')
 
 function timeout(ms, promise) {
     return new Promise(function (resolve, reject) {
@@ -21,7 +22,7 @@ function timeout(ms, promise) {
 }
 
 function start(options){
-    const promise = this.wait(_.assign({}, {timeout: this.timeout}, options))
+    const promise = this.wait(_.assign({}, this))
     return timeout(this.timeout, promise)
 }
 
@@ -56,5 +57,15 @@ function configure(setting, value){
 }
 
 module.exports = {
-    configure: configure
+    loadWaiterModule(name) {
+        const waiterModule = require(resolver.resolve(name)),
+            config = _.assign(waiterModule.defaultOptions(),
+                {
+                    wait: waiterModule.wait,
+                    configure: configure,
+                    start: start
+                })
+
+        return config
+    }
 }
