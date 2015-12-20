@@ -1,5 +1,5 @@
 {
-  "name": "when-warm",
+  "name": "chillin",
   "version": "1.0.0",
   "description": "NPM package API and Bash/CLI tool to implement waiting on an external resource's availability.",
   "main": "src/api.js",
@@ -11,7 +11,7 @@
     "test": "shell/bin/test.sh"
   },
   "bin": {
-    "when-warm": "shell/bin/cli.sh"
+    "chillin": "shell/bin/cli.sh"
   },
   "repository": {
     "type": "git",
