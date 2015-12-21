@@ -14,7 +14,3 @@ export MODULENAME
 
 shopt -s expand_aliases
 alias "$MODULENAME=$PROJECTROOT/shell/bin/cli.sh"
-#eval "export CMDLINE=\"$PROJECTROOT/shell/bin/cli.sh\""
-#FUNCDEF="function $MODULENAME() { echo '=====>'$@'; $CMDLINE $@; }"
-#eval $FUNCDEF
-#export -f $MODULENAME

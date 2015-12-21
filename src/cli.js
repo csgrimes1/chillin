@@ -8,7 +8,6 @@ function commandLineInfo(){
 }
 
 function preValidate(argv){
-        console.log(`=========================> ${argv}`)
     const argv2 = parser.sliceRelevantArguments(argv)
     if( argv2.length < 2 ){
         throw new Error('Module name and parameters required.')
@@ -21,7 +20,6 @@ try {
         , argv = preValidate(process.argv)
         , cmdLine = parser.parse(argv)
         , moduleName = resolver.resolve(cmdLine._.module)
-        , foof = console.log(`Module: ${moduleName}   ${process.argv}`)
         , waiterModule = require(moduleName)
         , moduleOptions = waiterModule.adaptCommandLine
         ? waiterModule.adaptCommandLine(cmdLine, process.argv)

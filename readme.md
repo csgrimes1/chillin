@@ -14,8 +14,8 @@ _S_ depends on _D_, but _D_ can be slow to start up. _S_ can use _chillin_ in ei
 ###NodeJS Example
 
 ```javascript
-const whenWarm = require('chillin')
-    , promise = whenWarm.loadWaiterModule('port')
+const chillin = require('chillin')
+    , promise = chillin.loadWaiterModule('port')
         .configure('host', 'www.google.com')
         .configure('port', 80)
         .start()

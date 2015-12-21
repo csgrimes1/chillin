@@ -1,5 +1,5 @@
-const whenWarm = require('chillin')
-    , promise = whenWarm.loadWaiterModule('port')
+const chillin = require('chillin')
+    , promise = chillin.loadWaiterModule('port')
         .configure('host', 'www.google.com')
         .configure('port', 80)
         .start()
