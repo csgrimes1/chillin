@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/csgrimes1/when-warm.git"
+    "url": "git+https://github.com/csgrimes1/chillin.git"
   },
   "keywords": [
     "wait",
@@ -25,17 +25,16 @@
   "author": "Chris Grimes",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/csgrimes1/when-warm/issues"
+    "url": "https://github.com/csgrimes1/chillin/issues"
   },
-  "homepage": "https://github.com/csgrimes1/when-warm#readme",
+  "homepage": "https://github.com/csgrimes1/chillin#readme",
   "devDependencies": {
-    "proxyquire": "1.7.3",
+    "mockery": "1.4.0",
     "sinon": "1.17.2",
     "tap": "2.3.2"
   },
   "dependencies": {
-    "lodash": "^3.10.1",
-    "minimist": "^1.2.0",
-    "mockery": "^1.4.0"
+    "lodash": "3.10.1",
+    "minimist": "1.2.0"
   }
 }

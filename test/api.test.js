@@ -40,8 +40,10 @@ test({}, 'should time out on long wait', function(t){
 })
 
 test({}, 'should error out on bad parameter', function(t){
+    const module = api.loadWaiterModule('mock')
     try {
-        api.configure('mom', 0)
+        module
+            .configure('mom', 0)
         t.fail('Should have thrown exception')
     }
     catch(x){

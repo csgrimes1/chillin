@@ -1,37 +1,55 @@
 const api = require('../src/api')
-    , proxyquire =  require('proxyquire').noPreserveCache()
+    , mockery =  require('mockery')
     , execWaiter = require('../src/exec-waiter')
     , _ = require('lodash')
     , cp = require('../src/commandline-parser')
+    , sinon = require('sinon')
     , test = require('./support/semantic-tap')(module, {
     beforeEach(config, t){
-        proxyquire('child_process', {})
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false,
+            useCleanCache: true
+        });
+        mockery.registerMock('child_process', {
+            exec: sinon.spy((commandLine, options, callback)=>{
+                setTimeout(()=>{
+                    const err = commandLine === 'bad'
+                        ? new Error('Invalid command')
+                        : null;
+                    callback(err, null, null)
+                }, config.delay || 1)
+            })
+        })
         return api.loadWaiterModule('exec')
-            .configure(_.assign({}, config, {
+            .configure(_.assign({}, _.pick(config, ['commandLine', 'timeout']), {
                 timeout: config.timeout || 5000
             }))
             .start()
+    },
+    afterEach(){
+        mockery.disable()
     }
 })
-
-//Note: not mocking command execution unless we stumble across some environment
-//where the tests fail.
 
 test({commandLine: "echo 'hello'", timeout: 100000}, 'should resolve on simple echo command', function(t, promise){
     t.plan(1)
     promise.then(function(){
         t.pass()
     })
+        .catch(function(x){
+            console.error(x)
+        })
 })
 
-test({commandLine: "....alsdfjal;fj", timeout: 100000}, 'should error on bad command', function(t, promise){
+test({commandLine: "bad", timeout: 100000}, 'should error on bad command', function(t, promise){
     t.plan(1)
     promise.catch(function(){
         t.pass()
     })
 })
 
-test({commandLine: "sleep 100", timeout: 5}, 'should timeout on long command', function(t, promise){
+test({commandLine: "sleep 100", timeout: 5, delay: 100}, 'should timeout on long command', function(t, promise){
     t.plan(1)
     promise.catch(function(){
         t.pass()

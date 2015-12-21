@@ -3,7 +3,7 @@ const net = require('net'),
     cp = require('./commandline-parser')
 
 function connectOnce(opt, resolve, reject) {
-    var client = net.connect(_.pick(opt, 'host', 'port'), function () {
+    var client = net.connect(_.pick(opt, 'host', 'port', 'timeout'), function () {
         client.end();
         resolve()
     })
@@ -38,7 +38,7 @@ module.exports = {
         const options = cp.readPositionalArgs(parsedCmdLine._.args, {
             host: cp.REQUIREDARG,
             port: cp.REQUIREDARG,
-            timeout: module.exports.defaultOptions().timeout
+            timeout: parsedCmdLine.timeout || module.exports.defaultOptions().timeout
         })
         return _.chain(parsedCmdLine)
             .omit('_')

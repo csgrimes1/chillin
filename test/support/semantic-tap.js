@@ -1,6 +1,5 @@
 //Makes tape use before/after semantics
 const tap = require('tap')
-    , proxyquire =  require('proxyquire').noPreserveCache().noCallThru()
     , sinon = require('sinon')
     , path = require('path')
 
