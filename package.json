@@ -1,6 +1,6 @@
 {
   "name": "chillin",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "NPM package API and Bash/CLI tool to implement waiting on an external resource's availability.",
   "main": "src/api.js",
   "directories": {

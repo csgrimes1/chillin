@@ -4,6 +4,8 @@ MYDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJDIR="$( cd $MYDIR/../.. && pwd )"
 PUBDIR=$PROJDIR/.publish
 
+$MYDIR/build.sh
+
 mkdir -p $PUBDIR
 set -x
 cp $PROJDIR/package.json $PUBDIR/
